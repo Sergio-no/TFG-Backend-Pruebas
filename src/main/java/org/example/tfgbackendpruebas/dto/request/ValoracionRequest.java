@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class ValoracionRequest {
     @NotNull private Long reparacionId;
-    @Min(1) @Max(5) private short puntuacion;
+    @NotNull @Min(1) @Max(5) private Short puntuacion; // cambia short por Short
     private String comentario;
 }
