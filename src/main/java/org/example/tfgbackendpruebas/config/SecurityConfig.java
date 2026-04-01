@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/register").permitAll()
                         .requestMatchers("/api/estadisticas/**").hasRole("JEFE")
-                        .anyRequest().permitAll() // .authenticated()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(firebaseTokenFilter,
                         UsernamePasswordAuthenticationFilter.class);

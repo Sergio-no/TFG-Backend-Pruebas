@@ -22,11 +22,7 @@ public class FirebaseTokenFilter extends OncePerRequestFilter {
                                     FilterChain chain)
             throws ServletException, IOException {
 
-        // MODO TEST - quitar antes de producción
-        chain.doFilter(request, response);
-        return;
 
-        /*
         String header = request.getHeader("Authorization");
 
         if (header != null && header.startsWith("Bearer ")) {
@@ -55,6 +51,6 @@ public class FirebaseTokenFilter extends OncePerRequestFilter {
         }
 
         chain.doFilter(request, response);
-        */
+
     }
 }
