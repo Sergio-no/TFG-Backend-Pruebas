@@ -1,6 +1,7 @@
 package org.example.tfgbackendpruebas.service;
 
-import lombok.RequiredArgsConstructor;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import org.example.tfgbackendpruebas.dto.request.RegisterRequest;
 import org.example.tfgbackendpruebas.dto.response.UsuarioResponse;
 import org.example.tfgbackendpruebas.exception.ResourceNotFoundException;
@@ -12,6 +13,8 @@ import org.example.tfgbackendpruebas.util.UsuarioMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 @Service
 public class UsuarioService {
@@ -25,7 +28,6 @@ public class UsuarioService {
         if (usuarioRepo.existsByEmail(req.getEmail()))
             throw new IllegalArgumentException("Email ya registrado");
 
-        // Sustituye el bloque de creación de usuario por esto:
         Usuario u = new Usuario();
         u.setFirebaseUid(req.getFirebaseUid());
         u.setNombre(req.getNombre());
@@ -43,6 +45,14 @@ public class UsuarioService {
             Oficina o = new Oficina();
             o.setUsuario(u);
             oficinaRepo.save(o);
+        }
+
+        // Fijar custom claim en Firebase para que el rol viaje en el idToken
+        try {
+            FirebaseAuth.getInstance().setCustomUserClaims(
+                    req.getFirebaseUid(), Map.of("rol", u.getRol()));
+        } catch (FirebaseAuthException e) {
+            System.err.println("Error fijando custom claim: " + e.getMessage());
         }
 
         return UsuarioMapper.toResponse(u);

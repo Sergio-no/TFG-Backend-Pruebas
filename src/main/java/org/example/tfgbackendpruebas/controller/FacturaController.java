@@ -1,5 +1,6 @@
 package org.example.tfgbackendpruebas.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.tfgbackendpruebas.dto.request.PagoRequest;
 import org.example.tfgbackendpruebas.dto.response.FacturaResponse;
 import org.example.tfgbackendpruebas.service.FacturaService;
@@ -27,7 +28,8 @@ public class FacturaController {
     @PostMapping("/reparacion/{reparacionId}")
     public ResponseEntity<FacturaResponse> generar(
             @PathVariable Long reparacionId,
-            @RequestHeader("X-Firebase-UID") String uid) {
+            HttpServletRequest request) {
+        String uid = (String) request.getAttribute("firebaseUid");
         return ResponseEntity.ok(facturaService.generarDesdeReparacion(reparacionId, uid));
     }
 

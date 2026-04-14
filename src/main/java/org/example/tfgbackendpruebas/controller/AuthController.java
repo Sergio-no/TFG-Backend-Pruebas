@@ -1,5 +1,6 @@
 package org.example.tfgbackendpruebas.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.example.tfgbackendpruebas.dto.request.RegisterRequest;
 import org.example.tfgbackendpruebas.dto.response.UsuarioResponse;
@@ -21,8 +22,8 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UsuarioResponse> me(
-            @RequestHeader("X-Firebase-UID") String uid) {
+    public ResponseEntity<UsuarioResponse> me(HttpServletRequest request) {
+        String uid = (String) request.getAttribute("firebaseUid");
         return ResponseEntity.ok(usuarioService.getByFirebaseUid(uid));
     }
 }

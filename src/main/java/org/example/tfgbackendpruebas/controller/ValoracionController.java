@@ -1,5 +1,6 @@
 package org.example.tfgbackendpruebas.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.example.tfgbackendpruebas.dto.request.ValoracionRequest;
 import org.example.tfgbackendpruebas.dto.response.ValoracionResponse;
@@ -7,7 +8,6 @@ import org.example.tfgbackendpruebas.service.ValoracionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -29,7 +29,8 @@ public class ValoracionController {
     @PostMapping
     public ResponseEntity<ValoracionResponse> crear(
             @Valid @RequestBody ValoracionRequest req,
-            @RequestHeader("X-Firebase-UID") String uid) {
+            HttpServletRequest request) {
+        String uid = (String) request.getAttribute("firebaseUid");
         return ResponseEntity.ok(valoracionService.crear(req, uid));
     }
 }
